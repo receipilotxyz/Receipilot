@@ -26,6 +26,10 @@ const nextConfig = {
       net: false,
       tls: false,
     };
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@react-native-async-storage/async-storage': false,
+    };
     config.externals.push('pino-pretty', 'lokijs', 'encoding');
     return config;
   },

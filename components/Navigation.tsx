@@ -5,13 +5,19 @@ import { usePathname } from 'next/navigation';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useTheme } from 'next-themes';
 import { Moon, Sun, Menu, X, Receipt } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
+import { isWalletConnectEnabled } from '@/lib/wagmi-config';
 
 export function Navigation() {
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const navLinks = [
     { href: '/', label: 'Home' },
@@ -55,14 +61,25 @@ export function Navigation() {
             className="hidden rounded-lg p-2 text-muted-foreground transition-colors hover:bg-white/5 hover:text-white md:block"
             aria-label="Toggle theme"
           >
-            {theme === 'dark' ? (
+            {!mounted ? (
+              <div className="h-5 w-5" />
+            ) : theme === 'dark' ? (
               <Sun className="h-5 w-5" />
             ) : (
               <Moon className="h-5 w-5" />
             )}
           </button>
           <div className="hidden md:block [&>*]:!rounded-lg">
-            <ConnectButton />
+            {mounted && isWalletConnectEnabled ? (
+              <ConnectButton />
+            ) : (
+              <button
+                className="rounded-lg bg-cyan-400 px-4 py-2 text-sm font-semibold text-black opacity-80"
+                type="button"
+              >
+                Connect Wallet
+              </button>
+            )}
           </div>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -97,7 +114,16 @@ export function Navigation() {
               </Link>
             ))}
             <div className="pt-4">
-              <ConnectButton />
+              {isWalletConnectEnabled ? (
+                <ConnectButton />
+              ) : (
+                <button
+                  className="w-full rounded-lg bg-cyan-400 px-4 py-2 text-sm font-semibold text-black opacity-80"
+                  type="button"
+                >
+                  Connect Wallet
+                </button>
+              )}
             </div>
           </div>
         </div>

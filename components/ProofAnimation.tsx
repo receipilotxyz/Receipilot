@@ -43,9 +43,9 @@ export function ProofAnimation({
 
   useEffect(() => {
     if (!isOpen) {
-      setProgress(0);
-      setCurrentStepIndex(0);
-      setCompletedSteps([]);
+      if (progress !== 0) setProgress(0);
+      if (currentStepIndex !== 0) setCurrentStepIndex(0);
+      if (completedSteps.length > 0) setCompletedSteps([]);
       return;
     }
 

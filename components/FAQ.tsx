@@ -61,6 +61,14 @@ export function FAQ() {
 
   useEffect(() => {
     async function fetchFAQs() {
+      const isLocalPreview =
+        typeof window !== 'undefined' && ['localhost', '127.0.0.1'].includes(window.location.hostname);
+
+      if (isLocalPreview) {
+        setIsLoading(false);
+        return;
+      }
+
       try {
         const data = await sanityClient.fetch<FAQItem[]>(
           `*[_type == "faq"] | order(order asc) {
@@ -72,8 +80,8 @@ export function FAQ() {
         if (data && data.length > 0) {
           setFaqs(data);
         }
-      } catch (error) {
-        console.error('Failed to fetch FAQs:', error);
+      } catch {
+        // Keep local fallback FAQs without logging noisy preview errors.
       } finally {
         setIsLoading(false);
       }

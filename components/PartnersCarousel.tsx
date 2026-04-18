@@ -22,6 +22,15 @@ export function PartnersCarousel() {
 
   useEffect(() => {
     async function fetchPartners() {
+      const isLocalPreview =
+        typeof window !== 'undefined' && ['localhost', '127.0.0.1'].includes(window.location.hostname);
+
+      if (isLocalPreview) {
+        setPartners(getDefaultPartners());
+        setIsLoading(false);
+        return;
+      }
+
       try {
         const data = await sanityClient.fetch<Partner[]>(
           `*[_type == "partner"] | order(order asc) {
@@ -36,9 +45,7 @@ export function PartnersCarousel() {
           }`
         );
         setPartners(data);
-      } catch (error) {
-        console.error('Failed to fetch partners:', error);
-        // Fallback to default partners
+      } catch {
         setPartners(getDefaultPartners());
       } finally {
         setIsLoading(false);
