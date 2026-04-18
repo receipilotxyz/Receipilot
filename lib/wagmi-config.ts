@@ -2,10 +2,12 @@ import { http } from 'wagmi';
 import { base, baseSepolia } from 'wagmi/chains';
 import { getDefaultConfig } from '@rainbow-me/rainbowkit';
 
-const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '';
+const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID?.trim() || 'local-dev-walletconnect';
 
-if (!projectId) {
-  console.warn('WalletConnect Project ID not found. Please add it to .env');
+if (!process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID?.trim()) {
+  console.warn(
+    'WalletConnect Project ID not found. Using a local development fallback; wallet features may be limited.'
+  );
 }
 
 export const config = getDefaultConfig({
