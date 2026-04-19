@@ -32,7 +32,7 @@ export function Navigation() {
     <nav className="sticky top-0 z-50 w-full border-b border-border bg-background/90 backdrop-blur-md">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2.5">
-          <div className="relative flex h-6 w-6 items-center justify-center">
+          <div className="relative flex h-6 w-6 items-center justify-center translate-y-[2px]">
             {siteConfig.logoImage ? (
               <img src={siteConfig.logoImage} alt={siteConfig.name} className="h-6 w-auto mix-blend-multiply dark:mix-blend-screen" />
             ) : (
@@ -45,8 +45,8 @@ export function Navigation() {
               </svg>
             )}
           </div>
-          <span className="font-logo text-2xl font-extrabold tracking-tight bg-gradient-to-r from-slate-800 to-emerald-700 bg-clip-text text-transparent underline decoration-slate-700/40 underline-offset-[3px] decoration-[1.5px] dark:from-slate-200 dark:to-emerald-400">
-            Receipilot
+          <span className="font-logo text-2xl font-extrabold tracking-tight bg-gradient-to-r from-sky-600 to-blue-400 bg-clip-text text-transparent underline decoration-sky-500/40 underline-offset-[3px] decoration-[1.5px] dark:from-sky-400 dark:to-blue-300">
+            receipilot
           </span>
         </Link>
 

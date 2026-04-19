@@ -13,9 +13,9 @@ export function Footer() {
           <div>
             <div className="mb-4 flex items-center gap-2.5">
               {siteConfig.logoImage ? (
-                <img src={siteConfig.logoImage} alt={siteConfig.name} className="h-6 w-auto mix-blend-multiply dark:mix-blend-screen" />
+                <img src={siteConfig.logoImage} alt={siteConfig.name} className="h-6 w-auto mix-blend-multiply dark:mix-blend-screen translate-y-[2px]" />
               ) : (
-                <svg viewBox="0 0 36 36" className="h-6 w-6" fill="none">
+                <svg viewBox="0 0 36 36" className="h-6 w-6 translate-y-[2px]" fill="none">
                   <rect x="2" y="2" width="32" height="32" rx="4" stroke="hsl(152 76% 42%)" strokeWidth="2.5" />
                   <line x1="2" y1="18" x2="34" y2="18" stroke="hsl(152 76% 42%)" strokeWidth="2" />
                   <line x1="18" y1="2" x2="18" y2="34" stroke="hsl(152 76% 42%)" strokeWidth="2" />
@@ -23,8 +23,8 @@ export function Footer() {
                   <line x1="30" y1="6" x2="6" y2="30" stroke="hsl(152 76% 42%)" strokeWidth="1.5" opacity="0.5" />
                 </svg>
               )}
-              <span className="font-logo text-2xl font-extrabold tracking-tight bg-gradient-to-r from-slate-800 to-emerald-700 bg-clip-text text-transparent underline decoration-slate-700/40 underline-offset-[3px] decoration-[1.5px] dark:from-slate-200 dark:to-emerald-400">
-                Receipilot
+              <span className="font-logo text-2xl font-extrabold tracking-tight bg-gradient-to-r from-sky-600 to-blue-400 bg-clip-text text-transparent underline decoration-sky-500/40 underline-offset-[3px] decoration-[1.5px] dark:from-sky-400 dark:to-blue-300">
+                receipilot
               </span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
