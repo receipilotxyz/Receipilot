@@ -34,7 +34,7 @@ export function Navigation() {
         <Link href="/" className="flex items-center gap-2.5">
           <div className="relative flex h-6 w-6 items-center justify-center">
             {siteConfig.logoImage ? (
-              <img src={siteConfig.logoImage} alt={siteConfig.name} className="h-6 w-auto" />
+              <img src={siteConfig.logoImage} alt={siteConfig.name} className="h-6 w-auto mix-blend-multiply dark:mix-blend-screen" />
             ) : (
               <svg viewBox="0 0 36 36" className="h-6 w-6" fill="none">
                 <rect x="2" y="2" width="32" height="32" rx="4" stroke="hsl(152 76% 42%)" strokeWidth="2.5" />
@@ -45,7 +45,7 @@ export function Navigation() {
               </svg>
             )}
           </div>
-          <span className="font-logo text-2xl font-extrabold tracking-tight text-foreground">
+          <span className="font-logo text-2xl font-extrabold tracking-tight bg-gradient-to-r from-primary to-emerald-300 bg-clip-text text-transparent underline decoration-primary/40 underline-offset-4 decoration-2">
             Receipilot
           </span>
         </Link>
