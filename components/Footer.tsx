@@ -23,7 +23,7 @@ export function Footer() {
                   <line x1="30" y1="6" x2="6" y2="30" stroke="hsl(152 76% 42%)" strokeWidth="1.5" opacity="0.5" />
                 </svg>
               )}
-              <span className="font-logo text-2xl font-extrabold tracking-tight bg-gradient-to-r from-sky-600 to-blue-400 bg-clip-text text-transparent underline decoration-sky-500/40 underline-offset-[3px] decoration-[1.5px] dark:from-sky-400 dark:to-blue-300">
+              <span className="font-logo text-2xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 to-sky-400 bg-clip-text text-transparent underline decoration-sky-400/40 underline-offset-[3px] decoration-[1.5px] dark:from-slate-100 dark:to-sky-400">
                 receipilot
               </span>
             </div>
