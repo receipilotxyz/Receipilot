@@ -4,6 +4,7 @@ import { Button } from './ui/button';
 import { WalletConnectButton } from './WalletConnectButton';
 import { useAccount } from 'wagmi';
 import { ArrowRight } from 'lucide-react';
+import { siteConfig } from '@/lib/site-config';
 
 export function Hero() {
   const { isConnected } = useAccount();
@@ -19,24 +20,23 @@ export function Hero() {
           <div className="flex flex-col items-center text-center">
             {/* Small label */}
             <div className="mb-6 inline-flex items-center rounded-full border border-border bg-muted px-4 py-2 text-sm font-medium text-muted-foreground">
-              Powered by vlayer ZK Technology
+              {siteConfig.hero.badge}
             </div>
 
             {/* Headline - reduced 25% from previous */}
             <h1 className="mb-5 text-3xl font-bold leading-[1.1] tracking-tight sm:text-4xl lg:text-5xl">
-              Turn Receipts into{' '}
-              <span className="text-primary">Verified NFTs</span>
+              {siteConfig.hero.headlineStart}{' '}
+              <span className="text-primary">{siteConfig.hero.headlineHighlight}</span>
             </h1>
 
             {/* Subheadline */}
             <p className="mb-8 max-w-lg text-base text-muted-foreground sm:text-lg">
-              Transform any online purchase email into a cryptographically verified NFT
-              in seconds. Impossible to fake, forever on-chain.
+              {siteConfig.hero.subheadline}
             </p>
 
             {/* Feature Pills */}
             <div className="mb-10 flex flex-wrap justify-center gap-3">
-              {['DKIM Verified', 'Instant Mint', 'On-Chain Forever'].map((text) => (
+              {siteConfig.hero.pills.map((text) => (
                 <div
                   key={text}
                   className="rounded-full border border-border bg-muted px-4 py-2 text-sm font-medium text-foreground"
@@ -64,11 +64,7 @@ export function Hero() {
 
             {/* Stats */}
             <div className="mt-12 flex flex-wrap justify-center gap-8 sm:gap-12">
-              {[
-                { value: '2 Free', label: 'mints per week' },
-                { value: '100%', label: 'verified' },
-                { value: '$0', label: 'gas fees' },
-              ].map((stat, i) => (
+              {siteConfig.hero.stats.map((stat, i) => (
                 <div key={i}>
                   <div className="text-2xl font-bold text-foreground md:text-3xl">{stat.value}</div>
                   <div className="text-sm text-muted-foreground">{stat.label}</div>
@@ -80,7 +76,7 @@ export function Hero() {
           {/* Right: Receipt Card Image */}
           <div className="relative hidden lg:flex items-center justify-center">
             <img
-              src="/receipt-card.png"
+              src={siteConfig.receiptImage}
               alt="Receipt Minted - Verified by vLayer"
               className="w-full max-w-sm drop-shadow-xl"
               style={{ background: 'transparent' }}

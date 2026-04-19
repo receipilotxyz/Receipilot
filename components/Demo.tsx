@@ -14,17 +14,11 @@ import {
   RotateCcw
 } from 'lucide-react';
 import { useToast } from './ui/use-toast';
+import { siteConfig } from '@/lib/site-config';
 
 type DemoStep = 'idle' | 'verifying' | 'generating' | 'minting' | 'complete';
 
-const MOCK_RECEIPT = {
-  merchant: 'Apple Store',
-  orderId: 'W2847395628',
-  product: 'MacBook Pro 14" M3 Pro',
-  date: '2026-03-10',
-  total: '$2,499.00',
-  email: 'customer@example.com',
-};
+const MOCK_RECEIPT = siteConfig.demo;
 
 const MOCK_NFT = {
   tokenId: '#4892',
@@ -132,11 +126,11 @@ export function Demo() {
             <div className="border-b border-border pb-3">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">From:</span>
-                <span className="text-primary">noreply@apple.com</span>
+                <span className="text-primary">noreply@{MOCK_RECEIPT.merchant.toLowerCase().replace(/\s/g, '')}.com</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Subject:</span>
-                <span>Your Apple Store Receipt</span>
+                <span>Your {MOCK_RECEIPT.merchant} Receipt</span>
               </div>
             </div>
             
@@ -277,7 +271,7 @@ export function Demo() {
                 {/* Receipt Card */}
                 <div className="mb-6 flex justify-center">
                   <img
-                    src="/receipt-card.png"
+                    src={siteConfig.receiptImage}
                     alt="Receipt Minted - Verified by vLayer"
                     className="w-full max-w-xs drop-shadow-xl"
                     style={{ background: 'transparent' }}

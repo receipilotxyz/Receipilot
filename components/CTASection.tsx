@@ -5,6 +5,7 @@ import { Button } from './ui/button';
 import { WalletConnectButton } from './WalletConnectButton';
 import { useAccount } from 'wagmi';
 import { ArrowRight } from 'lucide-react';
+import { siteConfig } from '@/lib/site-config';
 
 export function CTASection() {
   const { isConnected } = useAccount();
@@ -17,15 +18,15 @@ export function CTASection() {
         
         <div className="relative z-10">
           <div className="mb-6 inline-flex items-center rounded-full border border-border bg-muted px-4 py-2 text-sm font-medium text-muted-foreground">
-            Limited Time Offer
+            {siteConfig.cta.badge}
           </div>
           
           <h2 className="mb-4 text-4xl font-bold md:text-5xl">
-            Ready to <span className="text-primary">Get Started?</span>
+            {siteConfig.cta.title.split(' ').slice(0, -1).join(' ')}{' '}
+            <span className="text-primary">{siteConfig.cta.title.split(' ').slice(-1)}</span>
           </h2>
           <p className="mx-auto mb-10 max-w-xl text-lg text-muted-foreground">
-            Join thousands of users protecting their purchases with cryptographic proof.
-            Start minting your receipt NFTs today.
+            {siteConfig.cta.subtitle}
           </p>
           
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
@@ -45,18 +46,12 @@ export function CTASection() {
           </div>
 
           <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
-            <span className="flex items-center gap-2">
-              <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
-              No credit card
-            </span>
-            <span className="flex items-center gap-2">
-              <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
-              2 free mints/week
-            </span>
-            <span className="flex items-center gap-2">
-              <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
-              Zero gas fees
-            </span>
+            {siteConfig.cta.perks.map((perk, i) => (
+              <span key={i} className="flex items-center gap-2">
+                <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
+                {perk}
+              </span>
+            ))}
           </div>
         </div>
       </div>

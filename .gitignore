@@ -51,3 +51,7 @@ contracts/lib/
 *.swp
 *.swo
 *~
+
+# private docs
+DEPLOYMENT.md
+DEPLOY-NOTES.md
