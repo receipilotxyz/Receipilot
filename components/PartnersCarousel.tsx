@@ -23,7 +23,7 @@ export function PartnersCarousel() {
         >
           {[...brands, ...brands].map((brand, index) => (
             <div
-              key={\-\}
+              key={`${brand.id}-${index}`}
               className="clean-card relative flex h-24 w-40 flex-shrink-0 items-center justify-center rounded-xl p-4"
             >
               {brand.isComingSoon && (
