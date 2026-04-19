@@ -9,7 +9,7 @@ export const siteConfig = {
   "tagline": "Turn Receipts into Verified NFTs",
   "description": "Turn any online purchase email into a beautiful, cryptographically verified NFT in seconds. Impossible to fake. Powered by vlayer ZK technology.",
   "receiptImage": "/receipt-card.png",
-  "logoImage": "",
+  "logoImage": "/Untitled_design__11_.png",
   "favicon": "/favicon.ico",
   "ogImage": "/og-image.png",
   "hero": {

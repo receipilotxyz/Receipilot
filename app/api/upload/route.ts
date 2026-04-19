@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { writeFile } from 'fs/promises';
+import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 
 export async function POST(request: Request) {
@@ -40,10 +40,21 @@ export async function POST(request: Request) {
       case 'og':
         filename = `og-image.${ext}`;
         break;
-      default:
+      case 'logo':
+        filename = `logo.${ext}`;
+        break;
+      case 'partner': {
+        const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_').toLowerCase();
+        const partnersDir = join(process.cwd(), 'public', 'partners');
+        await mkdir(partnersDir, { recursive: true });
+        filename = `partners/${safeName}`;
+        break;
+      }
+      default: {
         // Sanitize filename to prevent path traversal
         const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
         filename = safeName;
+      }
     }
 
     const publicDir = join(process.cwd(), 'public');

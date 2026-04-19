@@ -4,8 +4,7 @@ import localFont from 'next/font/local';
 import './globals.css';
 import { Providers } from './providers';
 import { Toaster } from '@/components/ui/toaster';
-import { Navigation } from '@/components/Navigation';
-import { Footer } from '@/components/Footer';
+import { SiteLayout } from '@/components/SiteLayout';
 
 const heroLight = localFont({
   src: [
@@ -81,11 +80,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${heroLight.variable} ${bricolage.variable} font-sans antialiased`}>
         <Providers>
-          <div className="flex min-h-screen flex-col bg-background">
-            <Navigation />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
+          <SiteLayout>{children}</SiteLayout>
           <Toaster />
         </Providers>
       </body>

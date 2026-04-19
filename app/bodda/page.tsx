@@ -5,7 +5,7 @@ import { siteConfig } from '@/lib/site-config';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Save, Upload, Eye, Lock, Image, Type, FileText, Settings } from 'lucide-react';
+import { Save, Upload, Eye, Lock, Image, Type, FileText, Settings, Briefcase, X, Plus } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import Link from 'next/link';
 
@@ -13,7 +13,7 @@ export default function AdminPage() {
   const [authenticated, setAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [config, setConfig] = useState(siteConfig);
-  const [activeTab, setActiveTab] = useState<'brand' | 'hero' | 'content' | 'images' | 'faq'>('brand');
+  const [activeTab, setActiveTab] = useState<'brand' | 'hero' | 'content' | 'images' | 'faq' | 'partners'>('brand');
   const [saving, setSaving] = useState(false);
   const { toast } = useToast();
   const receiptRef = useRef<HTMLInputElement>(null);
@@ -68,7 +68,7 @@ export default function AdminPage() {
         if (target === 'receipt') setConfig((c) => ({ ...c, receiptImage: data.path }));
         if (target === 'logo') setConfig((c) => ({ ...c, logoImage: data.path }));
         if (target === 'favicon') setConfig((c) => ({ ...c, favicon: data.path }));
-        if (target === 'og') setConfig((c) => ({ ...c, ogImage: data.path }));
+        if (target === 'og') setConfig((c) => ({ ...c, ogImage: data.path }));      
         toast({ title: 'Image uploaded', description: `Saved as ${data.path}` });
       } else {
         toast({ title: 'Upload failed', description: data.error, variant: 'destructive' });
@@ -104,12 +104,35 @@ export default function AdminPage() {
     );
   }
 
+  const handlePartnerLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>, partnerIndex: number) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('target', 'partner');
+    try {
+      const res = await fetch('/api/upload', { method: 'POST', body: formData });
+      const data = await res.json();
+      if (res.ok) {
+        const brands = [...config.partners.brands];
+        brands[partnerIndex] = { ...brands[partnerIndex], logo: data.path };
+        setConfig({ ...config, partners: { ...config.partners, brands } });
+        toast({ title: 'Logo uploaded', description: `Saved as ${data.path}` });
+      } else {
+        toast({ title: 'Upload failed', description: data.error, variant: 'destructive' });
+      }
+    } catch {
+      toast({ title: 'Upload failed', variant: 'destructive' });
+    }
+  };
+
   const tabs = [
     { id: 'brand' as const, label: 'Brand', icon: Type },
     { id: 'hero' as const, label: 'Hero', icon: FileText },
     { id: 'images' as const, label: 'Images', icon: Image },
     { id: 'content' as const, label: 'Content', icon: Settings },
     { id: 'faq' as const, label: 'FAQ', icon: FileText },
+    { id: 'partners' as const, label: 'Partners', icon: Briefcase },
   ];
 
   return (
@@ -353,9 +376,108 @@ export default function AdminPage() {
               </div>
             )}
 
-            {/* FAQ Tab */}
-            {activeTab === 'faq' && (
+            {/* Partners Tab */}
+            {activeTab === 'partners' && (
               <div className="space-y-6">
+                <SectionCard title="Section Text">
+                  <div className="grid grid-cols-2 gap-4">
+                    <Field label="Heading (before highlight)" value={config.partners.heading} onChange={(v) => setConfig({ ...config, partners: { ...config.partners, heading: v } })} />
+                    <Field label="Heading Highlight (green)" value={config.partners.headingHighlight} onChange={(v) => setConfig({ ...config, partners: { ...config.partners, headingHighlight: v } })} />
+                  </div>
+                  <FieldTextarea label="Subheading" value={config.partners.subheading} onChange={(v) => setConfig({ ...config, partners: { ...config.partners, subheading: v } })} />
+                  <FieldTextarea label="Bottom Note" value={config.partners.note} onChange={(v) => setConfig({ ...config, partners: { ...config.partners, note: v } })} />
+                </SectionCard>
+
+                <SectionCard title="Brand Logos">
+                  <div className="space-y-4">
+                    {config.partners.brands.map((brand, i) => (
+                      <div key={brand.id} className="flex items-center gap-4 rounded-xl border border-border p-4">
+                        {/* Logo preview / upload */}
+                        <div className="flex-shrink-0">
+                          {brand.logo ? (
+                            <img src={brand.logo} alt={brand.name} className="h-10 w-20 rounded-lg border border-border bg-muted/50 object-contain p-1" />
+                          ) : (
+                            <div className="flex h-10 w-20 items-center justify-center rounded-lg border border-dashed border-border text-xs text-muted-foreground">No logo</div>
+                          )}
+                        </div>
+                        {/* Name */}
+                        <div className="flex-1 min-w-0">
+                          <Input
+                            placeholder="Brand name"
+                            value={brand.name}
+                            onChange={(e) => {
+                              const brands = [...config.partners.brands];
+                              brands[i] = { ...brands[i], name: e.target.value };
+                              setConfig({ ...config, partners: { ...config.partners, brands } });
+                            }}
+                          />
+                        </div>
+                        {/* Coming soon toggle */}
+                        <label className="flex cursor-pointer items-center gap-2 text-xs text-muted-foreground whitespace-nowrap">
+                          <input
+                            type="checkbox"
+                            checked={brand.isComingSoon}
+                            onChange={(e) => {
+                              const brands = [...config.partners.brands];
+                              brands[i] = { ...brands[i], isComingSoon: e.target.checked };
+                              setConfig({ ...config, partners: { ...config.partners, brands } });
+                            }}
+                            className="h-4 w-4 rounded border-border"
+                          />
+                          Coming Soon
+                        </label>
+                        {/* Upload logo */}
+                        <div>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            id={`partner-logo-${i}`}
+                            className="hidden"
+                            onChange={(e) => handlePartnerLogoUpload(e, i)}
+                          />
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => document.getElementById(`partner-logo-${i}`)?.click()}
+                          >
+                            <Upload className="mr-1 h-3 w-3" />
+                            Logo
+                          </Button>
+                        </div>
+                        {/* Remove brand */}
+                        <button
+                          onClick={() => {
+                            const brands = config.partners.brands.filter((_, idx) => idx !== i);
+                            setConfig({ ...config, partners: { ...config.partners, brands } });
+                          }}
+                          className="flex-shrink-0 text-red-400 hover:text-red-500"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      const newBrand = {
+                        id: String(Date.now()),
+                        name: '',
+                        logo: '',
+                        isComingSoon: false,
+                      };
+                      setConfig({ ...config, partners: { ...config.partners, brands: [...config.partners.brands, newBrand] } });
+                    }}
+                  >
+                    <Plus className="mr-2 h-4 w-4" />
+                    Add Brand
+                  </Button>
+                </SectionCard>
+              </div>
+            )}
+
+            {/* FAQ Tab */}
+            {activeTab === 'faq' && (              <div className="space-y-6">
                 <SectionCard title="Frequently Asked Questions">
                   {config.faqs.map((faq, i) => (
                     <div key={i} className="space-y-3 rounded-xl border border-border p-4">
