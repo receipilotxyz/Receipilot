@@ -9,11 +9,11 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/25 hover:shadow-primary/40',
+          'bg-primary text-foreground hover:bg-primary/90 shadow-lg shadow-primary/25 hover:shadow-primary/40 dark:text-primary-foreground',
         destructive:
           'bg-red-600 text-white shadow-lg hover:bg-red-700',
         outline:
-          'border border-primary/50 bg-transparent text-primary hover:bg-primary/10 hover:border-primary',
+          'border border-border bg-transparent text-foreground hover:bg-muted hover:border-primary dark:text-foreground',
         secondary:
           'bg-secondary text-secondary-foreground border border-border hover:bg-secondary/80',
         ghost: 
@@ -21,9 +21,9 @@ const buttonVariants = cva(
         link: 
           'text-primary underline-offset-4 hover:underline',
         gradient: 
-          'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 hover:from-emerald-500 hover:to-teal-500',
+          'bg-gradient-to-r from-emerald-600 to-teal-600 text-foreground shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 hover:from-emerald-500 hover:to-teal-500 dark:text-white',
         glow:
-          'bg-primary text-primary-foreground shadow-[0_0_20px_hsl(152_76%_42%/0.4)] hover:shadow-[0_0_30px_hsl(152_76%_42%/0.6)] hover:bg-primary/90',
+          'bg-primary text-foreground shadow-[0_0_20px_hsl(152_76%_42%/0.4)] hover:shadow-[0_0_30px_hsl(152_76%_42%/0.6)] hover:bg-primary/90 dark:text-primary-foreground',
       },
       size: {
         default: 'h-10 px-5 text-sm',

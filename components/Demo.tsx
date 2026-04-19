@@ -128,8 +128,8 @@ export function Demo() {
             </div>
           </div>
 
-          <div className="space-y-4 rounded-xl bg-black/30 p-4">
-            <div className="border-b border-white/10 pb-3">
+          <div className="space-y-4 rounded-xl border border-border bg-muted/50 p-4">
+            <div className="border-b border-border pb-3">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">From:</span>
                 <span className="text-primary">noreply@apple.com</span>
@@ -153,7 +153,7 @@ export function Demo() {
                 <span className="text-muted-foreground">Date</span>
                 <span className="text-sm">{MOCK_RECEIPT.date}</span>
               </div>
-              <div className="flex justify-between border-t border-white/10 pt-3">
+              <div className="flex justify-between border-t border-border pt-3">
                 <span className="font-semibold">Total</span>
                 <span className="font-bold text-green-400">{MOCK_RECEIPT.total}</span>
               </div>
@@ -210,7 +210,7 @@ export function Demo() {
                       cy="50"
                       r="45"
                       fill="none"
-                      stroke="rgba(139, 92, 246, 0.2)"
+                      stroke="hsl(152 76% 42% / 0.2)"
                       strokeWidth="6"
                     />
                     <circle
@@ -226,8 +226,8 @@ export function Demo() {
                     />
                     <defs>
                       <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor="#8b5cf6" />
-                        <stop offset="100%" stopColor="#6366f1" />
+                        <stop offset="0%" stopColor="#1db870" />
+                        <stop offset="100%" stopColor="#0d9488" />
                       </linearGradient>
                     </defs>
                   </svg>
@@ -259,7 +259,7 @@ export function Demo() {
                           ? 'bg-primary animate-pulse'
                           : ['verifying', 'generating', 'minting'].indexOf(step) > i
                           ? 'bg-primary'
-                          : 'bg-white/10'
+                          : 'bg-muted'
                       }`}
                     />
                   ))}
@@ -274,27 +274,21 @@ export function Demo() {
                 animate={{ opacity: 1, scale: 1 }}
                 className="py-6"
               >
-                <div className="mb-6 flex items-center justify-center">
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: 'spring', delay: 0.2 }}
-                    className="flex h-16 w-16 items-center justify-center rounded-2xl bg-green-500/20 border border-green-500/30"
-                  >
-                    <CheckCircle2 className="h-8 w-8 text-green-400" />
-                  </motion.div>
+                {/* Receipt Card */}
+                <div className="mb-6 flex justify-center">
+                  <img
+                    src="/receipt-card.png"
+                    alt="Receipt Minted - Verified by vLayer"
+                    className="w-full max-w-xs drop-shadow-xl"
+                    style={{ background: 'transparent' }}
+                  />
                 </div>
 
-                <div className="mb-6 text-center">
-                  <h3 className="text-xl font-bold text-green-400">NFT Minted Successfully!</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">Your receipt is now on-chain</p>
-                </div>
-
-                {/* NFT Details Card */}
-                <div className="mb-6 space-y-3 rounded-xl bg-black/30 p-4">
+                {/* NFT Details */}
+                <div className="mb-6 space-y-3 rounded-xl border border-border bg-muted/50 p-4">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">Token ID</span>
-                    <span className="font-mono font-bold text-primary">{MOCK_NFT.tokenId}</span>
+                    <span className="font-mono font-bold text-foreground">{MOCK_NFT.tokenId}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">Network</span>

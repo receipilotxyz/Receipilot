@@ -70,7 +70,7 @@ export function Hero() {
                 { value: '$0', label: 'gas fees' },
               ].map((stat, i) => (
                 <div key={i}>
-                  <div className="text-2xl font-bold text-primary md:text-3xl">{stat.value}</div>
+                  <div className="text-2xl font-bold text-foreground md:text-3xl">{stat.value}</div>
                   <div className="text-sm text-muted-foreground">{stat.label}</div>
                 </div>
               ))}
