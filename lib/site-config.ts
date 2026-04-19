@@ -114,6 +114,23 @@ export const siteConfig = {
     "date": "2026-03-10",
     "total": "$2,499.00",
     "email": "customer@example.com"
+  },
+  "partners": {
+    "heading": "Trusted by",
+    "headingHighlight": "Leading Brands",
+    "subheading": "We're partnering with major e-commerce platforms to bring verified receipts to everyone",
+    "note": "Preliminary agreements in motion with major e-commerce giants. More partners announced soon.",
+    "brands": [
+      { "id": "1", "name": "Amazon", "logo": "/partners/amazon.svg", "isComingSoon": false },
+      { "id": "2", "name": "eBay", "logo": "/partners/ebay.svg", "isComingSoon": false },
+      { "id": "3", "name": "Nike", "logo": "/partners/nike.svg", "isComingSoon": false },
+      { "id": "4", "name": "Adidas", "logo": "/partners/adidas.svg", "isComingSoon": false },
+      { "id": "5", "name": "Steam", "logo": "/partners/steam.svg", "isComingSoon": false },
+      { "id": "6", "name": "Apple", "logo": "/partners/apple.svg", "isComingSoon": false },
+      { "id": "7", "name": "Best Buy", "logo": "/partners/bestbuy.svg", "isComingSoon": true },
+      { "id": "8", "name": "Target", "logo": "/partners/target.svg", "isComingSoon": true },
+      { "id": "9", "name": "Walmart", "logo": "/partners/walmart.svg", "isComingSoon": true }
+    ]
   }
 };
 
