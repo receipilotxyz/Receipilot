@@ -2,6 +2,7 @@
 
 import { Button } from './ui/button';
 import { WalletConnectButton } from './WalletConnectButton';
+import { FundingBanner } from './FundingBanner';
 import { useAccount } from 'wagmi';
 import { ArrowRight } from 'lucide-react';
 import { siteConfig } from '@/lib/site-config';
@@ -82,13 +83,18 @@ export function Hero() {
             </div>
 
             {/* Stats */}
-            <div className="mt-12 flex flex-wrap justify-center gap-8 sm:gap-12">
+            <div className="mt-10 flex flex-wrap justify-center gap-8 sm:gap-12">
               {siteConfig.hero.stats.map((stat, i) => (
                 <div key={i}>
                   <div className="text-2xl font-bold text-foreground md:text-3xl">{stat.value}</div>
                   <div className="text-sm text-muted-foreground">{stat.label}</div>
                 </div>
               ))}
+            </div>
+
+            {/* Wallet-connected grant notification */}
+            <div className="mt-8 w-full max-w-lg">
+              <FundingBanner />
             </div>
           </div>
 
