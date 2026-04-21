@@ -11,7 +11,8 @@ import {
   Wallet,
   ArrowRight,
   Copy,
-  RotateCcw
+  RotateCcw,
+  Sparkles
 } from 'lucide-react';
 import { useToast } from './ui/use-toast';
 import { siteConfig } from '@/lib/site-config';
@@ -268,13 +269,22 @@ export function Demo() {
                 animate={{ opacity: 1, scale: 1 }}
                 className="py-6"
               >
-                {/* Receipt Card */}
+                {/* Receipt Card — protected: not an img element, can't be right-clicked/saved/dragged */}
                 <div className="mb-6 flex justify-center">
-                  <img
-                    src={siteConfig.receiptImage}
-                    alt="Receipt Minted - Verified by vLayer"
+                  <div
+                    role="presentation"
+                    aria-hidden="true"
                     className="w-full max-w-xs drop-shadow-xl"
-                    style={{ background: 'transparent' }}
+                    style={{
+                      backgroundImage: `url(${siteConfig.receiptImage})`,
+                      backgroundSize: 'contain',
+                      backgroundRepeat: 'no-repeat',
+                      backgroundPosition: 'center',
+                      aspectRatio: '4/5',
+                      WebkitUserSelect: 'none',
+                      userSelect: 'none',
+                      pointerEvents: 'none',
+                    }}
                   />
                 </div>
 

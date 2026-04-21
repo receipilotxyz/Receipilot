@@ -11,7 +11,7 @@ export function Footer() {
         <div className="grid gap-12 md:grid-cols-4">
           {/* Brand */}
           <div>
-            <div className="mb-4 flex items-center gap-2.5">
+            <div className="mb-4 flex items-center gap-2">
               {siteConfig.logoImage ? (
                 <img src={siteConfig.logoImage} alt={siteConfig.name} className="h-6 w-auto mix-blend-multiply dark:mix-blend-screen translate-y-[2px]" />
               ) : (
@@ -23,8 +23,8 @@ export function Footer() {
                   <line x1="30" y1="6" x2="6" y2="30" stroke="hsl(216 89% 35%)" strokeWidth="1.5" opacity="0.5" />
                 </svg>
               )}
-              <span className="font-logo text-2xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 to-blue-600 bg-clip-text text-transparent underline decoration-blue-500/40 underline-offset-[3px] decoration-[1.5px] dark:from-slate-100 dark:to-blue-400">
-                receipilot
+              <span className="font-logo text-[1.725rem] font-extrabold tracking-tight bg-gradient-to-r from-slate-900 to-blue-600 bg-clip-text text-transparent dark:from-slate-100 dark:to-blue-400">
+                receipilot<span className="text-[1.1em] leading-none">.</span>
               </span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">

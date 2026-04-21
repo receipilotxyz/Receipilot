@@ -110,21 +110,21 @@ export const siteConfig = {
   "demo": {
     "merchant": "Apple Store",
     "orderId": "W2847395628",
-    "product": "MacBook Pro 14\" M3 Pro",
-    "date": "2026-03-10",
-    "total": "$2,499.00",
+    "product": "Macbook Neo 14\"",
+    "date": "2026-02-25",
+    "total": "$549.00",
     "email": "customer@example.com"
   },
   "fonts": {
     "logoFont": {
       "type": "google",
-      "family": "Space Grotesk",
+      "family": "Raleway",
       "url": ""
     },
     "bodyFont": {
-      "type": "google",
-      "family": "Inter",
-      "url": ""
+      "type": "upload",
+      "family": "HeroLight-Regular",
+      "url": "/fonts/herolight-regular.otf"
     }
   },
   "partners": {

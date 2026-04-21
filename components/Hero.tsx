@@ -73,106 +73,23 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Right: Receipt Card with Liquid Glass effect */}
+          {/* Right: Receipt Card Image — protected: not an img element */}
           <div className="relative hidden lg:flex items-center justify-center">
-
-            {/* ── Background scene behind the glass ── */}
-            {/* Soft ambient blobs give the glass something to refract */}
-            <div className="absolute inset-0 -z-10 overflow-hidden rounded-3xl">
-              {/* Large blue blob — top-left */}
-              <div
-                className="absolute -top-16 -left-16 h-72 w-72 rounded-full opacity-60 blur-3xl"
-                style={{ background: 'radial-gradient(circle, #0A48A6 0%, #1e6fd4 60%, transparent 100%)' }}
-              />
-              {/* Cyan accent blob — bottom-right */}
-              <div
-                className="absolute -bottom-12 -right-10 h-64 w-64 rounded-full opacity-50 blur-3xl"
-                style={{ background: 'radial-gradient(circle, #38bdf8 0%, #0ea5e9 50%, transparent 100%)' }}
-              />
-              {/* Violet accent blob — top-right */}
-              <div
-                className="absolute top-8 -right-8 h-48 w-48 rounded-full opacity-40 blur-2xl"
-                style={{ background: 'radial-gradient(circle, #818cf8 0%, #6366f1 60%, transparent 100%)' }}
-              />
-              {/* Warm gold accent — bottom-left */}
-              <div
-                className="absolute -bottom-4 left-8 h-40 w-40 rounded-full opacity-35 blur-2xl"
-                style={{ background: 'radial-gradient(circle, #fbbf24 0%, #f59e0b 60%, transparent 100%)' }}
-              />
-            </div>
-
-            {/* ── Liquid glass container ── */}
             <div
-              className="relative rounded-[2.5rem] p-5"
+              role="presentation"
+              aria-hidden="true"
+              className="w-full max-w-sm drop-shadow-xl"
               style={{
-                /* Multi-layer glass background */
-                background:
-                  'linear-gradient(135deg, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0.10) 50%, rgba(10,72,166,0.08) 100%)',
-                backdropFilter: 'blur(28px) saturate(180%) brightness(1.05)',
-                WebkitBackdropFilter: 'blur(28px) saturate(180%) brightness(1.05)',
-                /* Border — bright top-left edge, dim bottom-right (light from top-left) */
-                border: '1px solid transparent',
-                backgroundClip: 'padding-box',
-                boxShadow: [
-                  /* outer glow */
-                  '0 0 0 1px rgba(255,255,255,0.55)',
-                  /* specular inner top highlight */
-                  'inset 0 1.5px 0 rgba(255,255,255,0.70)',
-                  /* inner bottom shadow */
-                  'inset 0 -1px 0 rgba(10,72,166,0.15)',
-                  /* depth shadow */
-                  '0 32px 64px rgba(10,72,166,0.22)',
-                  '0 8px 24px rgba(0,0,0,0.12)',
-                ].join(', '),
+                backgroundImage: `url(${siteConfig.receiptImage})`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+                aspectRatio: '4/5',
+                WebkitUserSelect: 'none',
+                userSelect: 'none',
+                pointerEvents: 'none',
               }}
-            >
-              {/* Specular glare sweep — top-left shine */}
-              <div
-                className="pointer-events-none absolute inset-0 rounded-[2.5rem] opacity-60"
-                style={{
-                  background:
-                    'linear-gradient(125deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.10) 35%, transparent 60%)',
-                }}
-              />
-
-              {/* The receipt image itself */}
-              <img
-                src={siteConfig.receiptImage}
-                alt="Receipt Minted - Verified by vLayer"
-                className="relative z-10 w-full max-w-[280px] drop-shadow-2xl"
-                style={{ background: 'transparent' }}
-              />
-
-              {/* Bottom frosted rim */}
-              <div
-                className="pointer-events-none absolute bottom-0 left-0 right-0 h-16 rounded-b-[2.5rem] opacity-40"
-                style={{
-                  background: 'linear-gradient(to top, rgba(10,72,166,0.18) 0%, transparent 100%)',
-                }}
-              />
-            </div>
-
-            {/* Floating micro-pills for visual richness */}
-            <div
-              className="absolute -top-4 right-8 rounded-full px-3 py-1 text-xs font-semibold text-white shadow-lg"
-              style={{
-                background: 'linear-gradient(135deg, rgba(10,72,166,0.85), rgba(56,189,248,0.85))',
-                backdropFilter: 'blur(12px)',
-                border: '1px solid rgba(255,255,255,0.35)',
-              }}
-            >
-              DKIM Verified ✓
-            </div>
-            <div
-              className="absolute -bottom-4 left-8 rounded-full px-3 py-1 text-xs font-semibold text-white shadow-lg"
-              style={{
-                background: 'linear-gradient(135deg, rgba(99,102,241,0.85), rgba(10,72,166,0.85))',
-                backdropFilter: 'blur(12px)',
-                border: '1px solid rgba(255,255,255,0.35)',
-              }}
-            >
-              On-Chain Forever ⬡
-            </div>
+            />
           </div>
         </div>
       </div>

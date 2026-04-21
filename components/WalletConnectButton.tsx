@@ -26,7 +26,17 @@ export function WalletConnectButton({
         const connected = ready && !!account && !!chain;
 
         if (!ready) {
-          return <div className={cn('h-10 w-32 rounded-xl bg-muted', className)} />;
+          return (
+            <Button
+              type="button"
+              variant="outline"
+              size={size}
+              className={cn(fullWidth && 'w-full', 'opacity-0 pointer-events-none', className)}
+              aria-hidden
+            >
+              {label}
+            </Button>
+          );
         }
 
         if (connected && hideWhenConnected) {
