@@ -35,28 +35,47 @@ export function Hero() {
             </p>
 
             {/* Feature Pills */}
-            <div className="mb-10 flex flex-wrap justify-center gap-3">
+            <div className="mb-8 flex flex-wrap justify-center gap-3">
               {siteConfig.hero.pills.map((text) => (
                 <div
                   key={text}
-                  className="rounded-full border border-border bg-muted px-4 py-2 text-sm font-medium text-foreground"
+                  className="rounded-full border border-border bg-muted px-3 py-1.5 text-sm font-medium text-foreground"
                 >
                   {text}
                 </div>
               ))}
             </div>
 
+            {/* NFT Image — visible on mobile only, hidden on lg where it's in the right column */}
+            <div className="mb-8 flex justify-center lg:hidden">
+              <div
+                role="presentation"
+                aria-hidden="true"
+                className="w-48 sm:w-56 drop-shadow-xl"
+                style={{
+                  backgroundImage: `url(${siteConfig.receiptImage})`,
+                  backgroundSize: 'contain',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'center',
+                  aspectRatio: '4/5',
+                  WebkitUserSelect: 'none',
+                  userSelect: 'none',
+                  pointerEvents: 'none',
+                }}
+              />
+            </div>
+
             {/* CTA Buttons */}
-            <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              {!isConnected && <WalletConnectButton label="Connect Wallet" size="xl" />}
-              <Button size="xl" variant="outline" asChild>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              {!isConnected && <WalletConnectButton label="Connect Wallet" size="lg" />}
+              <Button size="lg" variant="outline" asChild>
                 <a href="/demo">Try Live Demo</a>
               </Button>
               {isConnected && (
-                <Button size="xl" className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90" asChild>
+                <Button size="lg" className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90" asChild>
                   <a href="#upload">
                     Start Minting
-                    <ArrowRight className="h-5 w-5" />
+                    <ArrowRight className="h-4 w-4" />
                   </a>
                 </Button>
               )}

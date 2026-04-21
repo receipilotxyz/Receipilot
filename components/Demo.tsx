@@ -29,9 +29,37 @@ const MOCK_NFT = {
   timestamp: new Date().toISOString(),
 };
 
+const STEP_LOGS: Record<string, string[]> = {
+  verifying: [
+    '→ Parsing email headers...',
+    '→ Extracting DKIM signature...',
+    '→ Querying DNS for public key...',
+    '→ Validating signature integrity...',
+    '✓ DKIM signature is valid',
+    '✓ Merchant domain authenticated',
+  ],
+  generating: [
+    '→ Initialising vlayer prover...',
+    '→ Building ZK witness from receipt data...',
+    '→ Computing constraint satisfaction...',
+    '→ Assembling cryptographic proof...',
+    '✓ Zero-knowledge proof generated',
+    '✓ Privacy preserved — no personal data exposed',
+  ],
+  minting: [
+    '→ Connecting to Base network...',
+    '→ Pinning metadata to IPFS...',
+    '→ Submitting mint transaction...',
+    '→ Awaiting block confirmation...',
+    '✓ NFT minted — Token #4892',
+    '✓ On-chain record permanent',
+  ],
+};
+
 export function Demo() {
   const [step, setStep] = useState<DemoStep>('idle');
   const [progress, setProgress] = useState(0);
+  const [logLines, setLogLines] = useState<string[]>([]);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -82,6 +110,17 @@ export function Demo() {
     return undefined;
   }, [step]);
 
+  // Animated terminal log lines
+  useEffect(() => {
+    const lines = STEP_LOGS[step];
+    if (!lines) { setLogLines([]); return; }
+    setLogLines([]);
+    const timers = lines.map((line, i) =>
+      setTimeout(() => setLogLines((prev) => [...prev, line]), i * 900),
+    );
+    return () => timers.forEach(clearTimeout);
+  }, [step]);
+
   const handleStart = () => {
     setStep('verifying');
     setProgress(0);
@@ -106,12 +145,12 @@ export function Demo() {
 
   return (
     <div className="mx-auto max-w-5xl">
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-4 lg:gap-6 lg:grid-cols-2">
         {/* Left: Email Preview */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="nft-card p-6"
+          className="nft-card p-4 sm:p-6"
         >
           <div className="mb-4 flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary">
@@ -165,7 +204,7 @@ export function Demo() {
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="nft-card relative overflow-hidden p-6"
+          className="nft-card relative overflow-hidden p-4 sm:p-6"
         >
           <AnimatePresence mode="wait">
             {step === 'idle' && (
@@ -196,68 +235,90 @@ export function Demo() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="flex h-full flex-col items-center justify-center py-8"
+                className="flex h-full flex-col items-center justify-center py-6"
               >
-                <div className="mb-8 relative">
-                  <svg className="h-32 w-32 -rotate-90" viewBox="0 0 100 100">
+                {/* Progress ring — blue */}
+                <div className="relative mb-5">
+                  <svg className="h-28 w-28 -rotate-90" viewBox="0 0 100 100">
                     <circle
-                      cx="50"
-                      cy="50"
-                      r="45"
+                      cx="50" cy="50" r="45"
                       fill="none"
-                      stroke="hsl(152 76% 42% / 0.2)"
+                      stroke="hsl(216 89% 35% / 0.18)"
                       strokeWidth="6"
                     />
                     <circle
-                      cx="50"
-                      cy="50"
-                      r="45"
+                      cx="50" cy="50" r="45"
                       fill="none"
-                      stroke="url(#gradient)"
+                      stroke="url(#blueGradient)"
                       strokeWidth="6"
                       strokeLinecap="round"
                       strokeDasharray={`${progress * 2.83} 283`}
                       className="transition-all duration-100"
                     />
                     <defs>
-                      <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor="#1db870" />
-                        <stop offset="100%" stopColor="#0d9488" />
+                      <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#0A48A6" />
+                        <stop offset="100%" stopColor="#3b82f6" />
                       </linearGradient>
                     </defs>
                   </svg>
-                  <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
                     <span className="text-2xl font-bold">{Math.round(progress)}%</span>
+                    <span className="text-[10px] text-muted-foreground mt-0.5">
+                      {step === 'verifying' && 'DKIM'}
+                      {step === 'generating' && 'ZK'}
+                      {step === 'minting' && 'MINT'}
+                    </span>
                   </div>
                 </div>
 
-                <div className="space-y-3 text-center">
-                  <h3 className="text-xl font-bold">
-                    {step === 'verifying' && 'Verifying Email...'}
-                    {step === 'generating' && 'Generating ZK Proof...'}
-                    {step === 'minting' && 'Minting NFT...'}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {step === 'verifying' && 'Checking DKIM signature authenticity'}
-                    {step === 'generating' && 'Creating cryptographic proof via vlayer'}
-                    {step === 'minting' && 'Writing to Base blockchain'}
-                  </p>
+                {/* Step title */}
+                <h3 className="mb-1 text-lg font-bold">
+                  {step === 'verifying' && 'Verifying Email'}
+                  {step === 'generating' && 'Generating ZK Proof'}
+                  {step === 'minting' && 'Minting NFT'}
+                </h3>
+                <p className="mb-4 text-xs text-muted-foreground">
+                  {step === 'verifying' && 'Checking DKIM signature authenticity'}
+                  {step === 'generating' && 'Creating cryptographic proof via vlayer'}
+                  {step === 'minting' && 'Writing to Base blockchain'}
+                </p>
+
+                {/* Animated terminal log */}
+                <div className="w-full rounded-xl border border-white/10 bg-black/50 p-3 font-mono text-xs h-28 sm:h-36 overflow-hidden">
+                  <div className="space-y-1">
+                    {logLines.map((line, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, x: -8 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className={line.startsWith('✓') ? 'text-emerald-400' : 'text-blue-300'}
+                      >
+                        {line}
+                      </motion.div>
+                    ))}
+                    <span className="inline-block h-3 w-1.5 bg-blue-300 animate-pulse" />
+                  </div>
                 </div>
 
-                {/* Step indicators */}
-                <div className="mt-8 flex items-center gap-2">
-                  {['verifying', 'generating', 'minting'].map((s, i) => (
-                    <div
-                      key={s}
-                      className={`h-2 w-8 rounded-full transition-all ${
-                        step === s
-                          ? 'bg-primary animate-pulse'
-                          : ['verifying', 'generating', 'minting'].indexOf(step) > i
-                          ? 'bg-primary'
-                          : 'bg-muted'
-                      }`}
-                    />
-                  ))}
+                {/* Step pill indicators */}
+                <div className="mt-4 flex items-center gap-2">
+                  {(['verifying', 'generating', 'minting'] as const).map((s, i) => {
+                    const steps = ['verifying', 'generating', 'minting'];
+                    const currentIdx = steps.indexOf(step);
+                    const isDone = currentIdx > i;
+                    const isActive = step === s;
+                    return (
+                      <div key={s} className="flex items-center gap-1">
+                        <div
+                          className={`h-2 rounded-full transition-all ${
+                            isActive ? 'w-8 bg-primary animate-pulse' : isDone ? 'w-5 bg-primary' : 'w-5 bg-muted'
+                          }`}
+                        />
+                      </div>
+                    );
+                  })}
                 </div>
               </motion.div>
             )}
@@ -269,23 +330,45 @@ export function Demo() {
                 animate={{ opacity: 1, scale: 1 }}
                 className="py-6"
               >
+                {/* Success badge */}
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="mb-4 flex justify-center"
+                >
+                  <div className="flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-sm font-semibold text-emerald-400">
+                    <CheckCircle2 className="h-4 w-4" />
+                    NFT Minted Successfully
+                  </div>
+                </motion.div>
+
                 {/* Receipt Card — protected: not an img element, can't be right-clicked/saved/dragged */}
-                <div className="mb-6 flex justify-center">
-                  <div
-                    role="presentation"
-                    aria-hidden="true"
-                    className="w-full max-w-xs drop-shadow-xl"
-                    style={{
-                      backgroundImage: `url(${siteConfig.receiptImage})`,
-                      backgroundSize: 'contain',
-                      backgroundRepeat: 'no-repeat',
-                      backgroundPosition: 'center',
-                      aspectRatio: '4/5',
-                      WebkitUserSelect: 'none',
-                      userSelect: 'none',
-                      pointerEvents: 'none',
-                    }}
-                  />
+                <div className="mb-5 flex justify-center">
+                  <motion.div
+                    initial={{ scale: 0.92, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
+                    className="relative w-full max-w-[200px] sm:max-w-xs"
+                  >
+                    {/* Glow halo behind card */}
+                    <div className="absolute -inset-3 rounded-2xl bg-primary/20 blur-xl" />
+                    <div
+                      role="presentation"
+                      aria-hidden="true"
+                      className="relative w-full drop-shadow-2xl"
+                      style={{
+                        backgroundImage: `url(${siteConfig.receiptImage})`,
+                        backgroundSize: 'contain',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'center',
+                        aspectRatio: '4/5',
+                        WebkitUserSelect: 'none',
+                        userSelect: 'none',
+                        pointerEvents: 'none',
+                      }}
+                    />
+                  </motion.div>
                 </div>
 
                 {/* NFT Details */}
@@ -314,15 +397,15 @@ export function Demo() {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex gap-3">
-                  <Button onClick={handleReset} variant="outline" className="flex-1 gap-2">
-                    <RotateCcw className="h-4 w-4" />
+                <div className="flex gap-2 sm:gap-3">
+                  <Button onClick={handleReset} variant="outline" size="sm" className="flex-1 gap-1 sm:gap-2">
+                    <RotateCcw className="h-3.5 w-3.5" />
                     Try Again
                   </Button>
-                  <Button variant="gradient" className="flex-1 gap-2" asChild>
+                  <Button variant="gradient" size="sm" className="flex-1 gap-1 sm:gap-2" asChild>
                     <Link href="/">
                       Connect Wallet
-                      <Wallet className="h-4 w-4" />
+                      <Wallet className="h-3.5 w-3.5" />
                     </Link>
                   </Button>
                 </div>
@@ -341,7 +424,7 @@ export function Demo() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="mt-8 grid gap-4 md:grid-cols-3"
+        className="mt-6 grid gap-3 sm:gap-4 sm:grid-cols-3"
       >
         {[
           {

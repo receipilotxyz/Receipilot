@@ -38,7 +38,7 @@ const defaultFAQs: FAQItem[] = [
     _id: '4',
     question: 'How does the free tier work?',
     answer:
-      'Every wallet gets 2 free mints per week, tracked on-chain. This resets every Sunday at midnight UTC. If you need more, upgrade to Premium ($9/month or $79/year) for unlimited mints, batch processing, and custom NFT designs.',
+      'Receipilot is completely free for users — no subscription, no hidden fees. We\'re currently in our early funding phase, burning our own capital to build the infrastructure that makes this globally accessible. Mint as many receipts as you like.',
   },
   {
     _id: '5',

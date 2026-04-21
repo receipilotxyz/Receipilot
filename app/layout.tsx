@@ -87,13 +87,52 @@ export const metadata: Metadata = {
   },
 };
 
+function buildServerFontHead(
+  bodyFont: { type: string; family: string; url: string },
+  logoFont: { type: string; family: string; url: string },
+) {
+  const styles: string[] = [];
+  const googleLinks: string[] = [];
+
+  if (bodyFont.type === 'upload' && bodyFont.url) {
+    styles.push(`@font-face{font-family:'CustomBodyFont';src:url('${bodyFont.url}');font-display:block;}`);
+    styles.push(`:root{--font-body-dynamic:'CustomBodyFont',system-ui,sans-serif;}`);
+  } else if (bodyFont.type === 'google' && bodyFont.family) {
+    const enc = bodyFont.family.replace(/ /g, '+');
+    googleLinks.push(`https://fonts.googleapis.com/css2?family=${enc}:wght@300;400;500;600;700;800&display=block`);
+    styles.push(`:root{--font-body-dynamic:'${bodyFont.family}',system-ui,sans-serif;}`);
+  }
+
+  if (logoFont.type === 'upload' && logoFont.url) {
+    styles.push(`@font-face{font-family:'CustomLogoFont';src:url('${logoFont.url}');font-display:block;}`);
+    styles.push(`:root{--font-logo-dynamic:'CustomLogoFont',system-ui,sans-serif;}`);
+  } else if (logoFont.type === 'google' && logoFont.family) {
+    const enc = logoFont.family.replace(/ /g, '+');
+    googleLinks.push(`https://fonts.googleapis.com/css2?family=${enc}:wght@300;400;500;600;700;800&display=block`);
+    styles.push(`:root{--font-logo-dynamic:'${logoFont.family}',system-ui,sans-serif;}`);
+  }
+
+  return { cssText: styles.join(''), googleLinks };
+}
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { cssText, googleLinks } = buildServerFontHead(
+    siteConfig.fonts.bodyFont,
+    siteConfig.fonts.logoFont,
+  );
+
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {googleLinks.map((href) => (
+          <link key={href} rel="stylesheet" href={href} />
+        ))}
+        {cssText && <style dangerouslySetInnerHTML={{ __html: cssText }} />}
+      </head>
       <body className={`${heroLight.variable} ${bricolage.variable} ${spaceGrotesk.variable} ${inter.variable} font-sans antialiased`}>
         <FontLoader logoFont={siteConfig.fonts.logoFont} bodyFont={siteConfig.fonts.bodyFont} />
         <Providers>

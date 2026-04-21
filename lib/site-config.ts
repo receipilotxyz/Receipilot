@@ -13,19 +13,19 @@ export const siteConfig = {
   "favicon": "/favicon.ico",
   "ogImage": "/og-image.png",
   "hero": {
-    "badge": "Powered by vlayer ZK Technology",
+    "badge": "Early Funding Phase — Free for Users",
     "headlineStart": "Turn Receipts into",
     "headlineHighlight": "Verified NFTs",
-    "subheadline": "Transform any online purchase email into a cryptographically verified NFT in seconds. Impossible to fake, forever on-chain.",
+    "subheadline": "Transform any online purchase email into a cryptographically verified NFT in seconds. Impossible to fake, forever on-chain — and completely free.",
     "pills": [
       "DKIM Verified",
       "Instant Mint",
-      "On-Chain Forever"
+      "100% Free"
     ],
     "stats": [
       {
-        "value": "2 Free",
-        "label": "mints per week"
+        "value": "100%",
+        "label": "free, always"
       },
       {
         "value": "100%",
@@ -60,12 +60,12 @@ export const siteConfig = {
     "subtitle": "The future of verified purchases starts here"
   },
   "cta": {
-    "badge": "Limited Time Offer",
-    "title": "Ready to Get Started?",
-    "subtitle": "Join thousands of users protecting their purchases with cryptographic proof. Start minting your receipt NFTs today.",
+    "badge": "We're Fundraising — Receipilot Stays Free",
+    "title": "Free for Everyone, Forever",
+    "subtitle": "We're building Receipilot on our own capital to bring verified receipt NFTs to users globally at zero cost. Every mint proves real demand and helps us raise the runway to make that happen.",
     "perks": [
       "No credit card",
-      "2 free mints/week",
+      "Always free for users",
       "Zero gas fees"
     ]
   },
@@ -84,7 +84,7 @@ export const siteConfig = {
     },
     {
       "question": "How does the free tier work?",
-      "answer": "Every wallet gets 2 free mints per week, tracked on-chain. This resets every Sunday at midnight UTC. If you need more, upgrade to Premium ($9/month or $79/year) for unlimited mints, batch processing, and custom NFT designs."
+      "answer": "Receipilot is completely free for users — no subscription, no hidden fees. We're currently in our early funding phase, burning our own capital to build the infrastructure that makes this globally accessible. Mint as many receipts as you like."
     },
     {
       "question": "Which stores are supported?",

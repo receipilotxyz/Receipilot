@@ -2,12 +2,14 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Upload, Mail, Link2, AlertCircle, ChevronDown, ChevronUp, ShieldCheck } from 'lucide-react';
+import { Upload, Mail, Link2, AlertCircle, ChevronDown, ChevronUp, ShieldCheck, Wallet } from 'lucide-react';
 import { Button } from './ui/button';
 import { Label } from './ui/label';
 import { Input } from './ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { ProofAnimation } from './ProofAnimation';
+import { WalletConnectButton } from './WalletConnectButton';
 import { useAccount } from 'wagmi';
 import { useToast } from './ui/use-toast';
 
@@ -17,7 +19,9 @@ export function UploadFlow() {
   const [file, setFile] = useState<File | null>(null);
   const [receiptLink, setReceiptLink] = useState('');
   const [showEmlGuide, setShowEmlGuide] = useState(false);
-  const { address, isConnected } = useAccount();
+  const [showFundingNotice, setShowFundingNotice] = useState(false);
+  const [mintPending, setMintPending] = useState(false);
+  const { isConnected } = useAccount();
   const { toast } = useToast();
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,15 +44,6 @@ export function UploadFlow() {
   };
 
   const handleGenerateProof = async () => {
-    if (!isConnected) {
-      toast({
-        title: 'Wallet not connected',
-        description: 'Please connect your wallet first',
-        variant: 'destructive',
-      });
-      return;
-    }
-
     if (activeTab === 'upload' && !file) {
       toast({
         title: 'No file selected',
@@ -67,6 +62,18 @@ export function UploadFlow() {
       return;
     }
 
+    // Show funding notice before first mint (once per session)
+    if (!mintPending) {
+      setShowFundingNotice(true);
+      return;
+    }
+
+    setIsGeneratingProof(true);
+  };
+
+  const handleFundingAck = () => {
+    setShowFundingNotice(false);
+    setMintPending(true);
     setIsGeneratingProof(true);
   };
 
@@ -83,20 +90,42 @@ export function UploadFlow() {
   return (
     <>
       <div id="upload" className="mx-auto max-w-4xl">
+        {/* Wallet gate — show connect prompt when wallet is not connected */}
+        {!isConnected ? (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="clean-card rounded-2xl p-12 text-center space-y-6"
+          >
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-border bg-muted">
+              <Wallet className="h-8 w-8 text-primary" />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold mb-2">Connect Your Wallet to Start Minting</h3>
+              <p className="text-sm text-muted-foreground max-w-sm mx-auto">
+                You need a Web3 wallet to generate cryptographic proofs and mint your verified receipt NFTs on Base.
+              </p>
+            </div>
+            <WalletConnectButton label="Connect Wallet" size="lg" />
+            <p className="text-xs text-muted-foreground">Receipilot is completely free — no subscription, no gas fees.</p>
+          </motion.div>
+        ) : (
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="upload">
-              <Upload className="mr-2 h-4 w-4" />
-              Upload .eml
+            <TabsTrigger value="upload" className="gap-1 px-2 text-xs sm:text-sm sm:gap-2">
+              <Upload className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
+              <span className="hidden xs:inline sm:inline">.eml</span>
+              <span className="xs:hidden sm:hidden">EML</span>
             </TabsTrigger>
-            <TabsTrigger value="link">
-              <Link2 className="mr-2 h-4 w-4" />
-              Receipt Link
+            <TabsTrigger value="link" className="gap-1 px-2 text-xs sm:text-sm sm:gap-2">
+              <Link2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
+              <span>Link</span>
             </TabsTrigger>
-            <TabsTrigger value="forward" className="relative">
-              <Mail className="mr-2 h-4 w-4" />
-              Forward Email
-              <span className="ml-2 rounded-full bg-primary/15 px-1.5 py-0.5 text-[10px] font-semibold text-primary leading-none">Soon</span>
+            <TabsTrigger value="forward" className="relative gap-1 px-2 text-xs sm:text-sm sm:gap-2">
+              <Mail className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
+              <span className="hidden sm:inline">Forward</span>
+              <span className="sm:hidden">Fwd</span>
+              <span className="ml-1 rounded-full bg-primary/15 px-1 py-0.5 text-[9px] font-semibold text-primary leading-none">Soon</span>
             </TabsTrigger>
           </TabsList>
 
@@ -104,10 +133,10 @@ export function UploadFlow() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="clean-card rounded-2xl p-8"
+              className="clean-card rounded-2xl p-5 sm:p-8"
             >
               <div className="mb-6">
-                <h3 className="mb-2 text-2xl font-semibold">Upload Receipt Email</h3>
+                <h3 className="mb-2 text-xl sm:text-2xl font-semibold">Upload Receipt Email</h3>
                 <p className="text-sm text-muted-foreground">
                   Export your receipt email as a .eml file and upload it here for full DKIM
                   verification
@@ -169,7 +198,7 @@ export function UploadFlow() {
               </div>
 
               <div className="space-y-6">
-                <div className="flex items-center justify-center rounded-xl border-2 border-dashed border-border p-12 transition-all hover:border-blue-500">
+                <div className="flex items-center justify-center rounded-xl border-2 border-dashed border-border p-8 sm:p-12 transition-all hover:border-blue-500">
                   <Label
                     htmlFor="file-upload"
                     className="flex cursor-pointer flex-col items-center"
@@ -194,7 +223,7 @@ export function UploadFlow() {
                   variant="gradient"
                   className="w-full"
                   onClick={handleGenerateProof}
-                  disabled={!file || !isConnected}
+                  disabled={!file}
                 >
                   Generate Proof & Mint NFT
                 </Button>
@@ -206,10 +235,10 @@ export function UploadFlow() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="clean-card rounded-2xl p-8"
+              className="clean-card rounded-2xl p-5 sm:p-8"
             >
               <div className="mb-6">
-                <h3 className="mb-2 text-2xl font-semibold">Paste Order / Receipt Link</h3>
+                <h3 className="mb-2 text-xl sm:text-2xl font-semibold">Paste Order / Receipt Link</h3>
                 <p className="text-sm text-muted-foreground">
                   Paste the direct link to your order confirmation page from a supported store.
                   We fetch only the order data — your account details stay private.
@@ -258,7 +287,7 @@ export function UploadFlow() {
                   variant="gradient"
                   className="w-full"
                   onClick={handleGenerateProof}
-                  disabled={!receiptLink.trim() || !isConnected}
+                  disabled={!receiptLink.trim()}
                 >
                   Generate Proof & Mint NFT
                 </Button>
@@ -270,11 +299,11 @@ export function UploadFlow() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="clean-card rounded-2xl p-8"
+              className="clean-card rounded-2xl p-5 sm:p-8"
             >
               <div className="mb-6 flex items-start justify-between gap-4">
                 <div>
-                  <h3 className="mb-2 text-2xl font-semibold">Forward to Our Address</h3>
+                  <h3 className="mb-2 text-xl sm:text-2xl font-semibold">Forward to Our Address</h3>
                   <p className="text-sm text-muted-foreground">
                     The most convenient method — just forward your receipt email directly.
                   </p>
@@ -287,7 +316,7 @@ export function UploadFlow() {
                   <p className="mb-2 text-sm text-muted-foreground">Forward your email to</p>
                   <div className="flex items-center justify-center gap-2">
                     <Mail className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-                    <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                    <span className="text-lg sm:text-2xl font-bold text-blue-600 dark:text-blue-400 break-all">
                       prove@receipilot.xyz
                     </span>
                   </div>
@@ -318,7 +347,34 @@ export function UploadFlow() {
             </motion.div>
           </TabsContent>
         </Tabs>
+        )} {/* end wallet gate */}
       </div>
+
+      {/* Pre-mint funding notice dialog */}
+      <Dialog open={showFundingNotice} onOpenChange={setShowFundingNotice}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-xl">A quick note before you mint 🌱</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 text-sm text-muted-foreground">
+            <p>
+              <strong className="text-foreground">Receipilot is completely free</strong> for
+              users, and we intend to keep it that way.
+            </p>
+            <p>
+              Right now we&apos;re in our early funding phase — burning our own capital to build
+              the infrastructure for global, zero-cost receipt verification. Every mint you make
+              proves real demand and helps us raise the runway to keep going.
+            </p>
+            <p className="text-xs">
+              Thank you for being an early user. Your support means everything. ❤️
+            </p>
+          </div>
+          <Button onClick={handleFundingAck} className="mt-2 w-full gap-2 bg-primary text-primary-foreground hover:bg-primary/90">
+            Got it — mint my receipt →
+          </Button>
+        </DialogContent>
+      </Dialog>
 
       <ProofAnimation
         isOpen={isGeneratingProof}

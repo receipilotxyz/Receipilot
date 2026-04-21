@@ -29,18 +29,18 @@ export function CTASection() {
             {siteConfig.cta.subtitle}
           </p>
           
-          <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+          <div className="flex flex-wrap items-center justify-center gap-3">
             {isConnected ? (
-              <Button size="xl" className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90" asChild>
+              <Button size="lg" className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90" asChild>
                 <a href="#upload">
                   Mint Your First Receipt
-                  <ArrowRight className="h-5 w-5" />
+                  <ArrowRight className="h-4 w-4" />
                 </a>
               </Button>
             ) : (
-              <WalletConnectButton label="Connect Wallet" size="xl" />
+              <WalletConnectButton label="Connect Wallet" size="lg" />
             )}
-            <Button size="xl" variant="outline" asChild>
+            <Button size="lg" variant="outline" asChild>
               <Link href="/demo">Try Live Demo</Link>
             </Button>
           </div>

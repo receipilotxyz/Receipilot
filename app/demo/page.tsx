@@ -21,7 +21,7 @@ export default function DemoPage() {
             </span>
             Interactive Demo
           </div>
-          <h1 className="text-4xl font-bold md:text-5xl">
+          <h1 className="text-3xl font-bold sm:text-4xl md:text-5xl">
             Experience <span className="text-primary">Receipilot</span>
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
