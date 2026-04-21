@@ -29,7 +29,7 @@ export function Navigation() {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 w-full bg-background/90 backdrop-blur-md">
+    <nav className="w-full bg-background/90 backdrop-blur-md">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2">
           <div className="relative flex h-6 w-6 items-center justify-center translate-y-[2px]">
