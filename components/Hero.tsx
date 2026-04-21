@@ -47,21 +47,23 @@ export function Hero() {
 
             {/* NFT Image — visible on mobile only, hidden on lg where it's in the right column */}
             <div className="mb-8 flex justify-center lg:hidden">
-              <div
-                role="presentation"
-                aria-hidden="true"
-                className="w-48 sm:w-56 drop-shadow-xl"
-                style={{
-                  backgroundImage: `url(${siteConfig.receiptImage})`,
-                  backgroundSize: 'contain',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'center',
-                  aspectRatio: '4/5',
-                  WebkitUserSelect: 'none',
-                  userSelect: 'none',
-                  pointerEvents: 'none',
-                }}
-              />
+              <div className="nft-aura">
+                <div
+                  role="presentation"
+                  aria-hidden="true"
+                  className="w-64 sm:w-72 drop-shadow-2xl"
+                  style={{
+                    backgroundImage: `url(${siteConfig.receiptImage})`,
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    aspectRatio: '4/5',
+                    WebkitUserSelect: 'none',
+                    userSelect: 'none',
+                    pointerEvents: 'none',
+                  }}
+                />
+              </div>
             </div>
 
             {/* CTA Buttons */}
@@ -98,21 +100,23 @@ export function Hero() {
 
           {/* Right: Receipt Card Image — protected: not an img element */}
           <div className="relative hidden lg:flex items-center justify-center">
-            <div
-              role="presentation"
-              aria-hidden="true"
-              className="w-full max-w-sm drop-shadow-xl"
-              style={{
-                backgroundImage: `url(${siteConfig.receiptImage})`,
-                backgroundSize: 'contain',
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center',
-                aspectRatio: '4/5',
-                WebkitUserSelect: 'none',
-                userSelect: 'none',
-                pointerEvents: 'none',
-              }}
-            />
+            <div className="nft-aura">
+              <div
+                role="presentation"
+                aria-hidden="true"
+                className="w-full max-w-sm drop-shadow-2xl"
+                style={{
+                  backgroundImage: `url(${siteConfig.receiptImage})`,
+                  backgroundSize: 'contain',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'center',
+                  aspectRatio: '4/5',
+                  WebkitUserSelect: 'none',
+                  userSelect: 'none',
+                  pointerEvents: 'none',
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>
